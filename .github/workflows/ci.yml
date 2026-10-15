@@ -15,4 +15,4 @@ jobs:
       - run: scripts/falsifier.sh
       - run: pv lint contracts
       - run: rmedia readme check .
-      - run: "! git grep -nE 'cop-inbox|nvme-raid0|tier[:-]'"
+      - run: scripts/leak-check.sh
