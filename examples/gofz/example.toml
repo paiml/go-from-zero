@@ -1,0 +1,8 @@
+[example]
+title = "gofz CLI"
+summary = "greet, stats and wc, each printing a contract line"
+run = "go run ./cmd/gofz greet Ada"
+
+[[files]]
+path = "../../app/app.go"
+note = "the command dispatcher"

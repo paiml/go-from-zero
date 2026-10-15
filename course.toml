@@ -1,0 +1,12 @@
+[course]
+slug = "go-from-zero"
+number = 1
+title = "Go from Zero"
+tagline = "The Go toolchain at the terminal, tested to 100%."
+description = "Tested Go code for the first course of the Go specialization: modules, vet, tests and a small CLI, each run for real in the terminal."
+prerequisites = ["Go 1.21 or newer", "A Linux or macOS terminal"]
+
+[[examples]]
+dir = "examples/gofz"
+title = "gofz CLI"
+summary = "greet, stats and wc, each printing a contract line"

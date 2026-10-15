@@ -1,0 +1,59 @@
+metadata:
+  version: "1.0.0"
+  author: "paiml"
+  description: "gofz demo contracts: every demo prints a named, runtime-checked proof line"
+  kind: pattern
+  crate: "go-from-zero"
+  references:
+    - "The Go Programming Language Specification"
+
+equations:
+  greeting_addressed:
+    formula: "len(Greeting(n)) > len(\"Hello, !\") for non-blank n"
+    domain: "n ∈ string, TrimSpace(n) ≠ \"\""
+    invariants:
+      - "Greeting of a blank name returns ErrEmptyName"
+  mean_median_bounded:
+    formula: "min(xs) <= Mean(xs) <= max(xs) and min(xs) <= Median(xs) <= max(xs)"
+    domain: "xs ∈ []float64, len(xs) > 0"
+    invariants:
+      - "Median does not modify its input"
+  words_bounded:
+    formula: "Count(r).Words <= Count(r).Bytes"
+    domain: "r ∈ io.Reader"
+    invariants:
+      - "every word has at least one byte"
+
+proof_obligations:
+  - type: bound
+    property: "Mean and Median stay within the data range"
+    formal: "min(xs) <= Mean(xs) <= max(xs)"
+    applies_to: all
+  - type: bound
+    property: "Words never exceed bytes"
+    formal: "Words <= Bytes"
+    applies_to: all
+
+falsification_tests:
+  - id: FALSIFY-GOFZ-001
+    rule: "greeting contract line"
+    test: "TestRun/greet"
+    prediction: "prints contract: greeting-is-nonempty-and-addressed OK"
+    if_fails: "Contract violation — demo prints no proof line"
+  - id: FALSIFY-GOFZ-002
+    rule: "mean and median bounded"
+    test: "TestRun/stats"
+    prediction: "prints contract: mean-and-median-within-min-max OK"
+    if_fails: "Contract violation — summary outside data range"
+  - id: FALSIFY-GOFZ-003
+    rule: "words bounded"
+    test: "TestRun/wc"
+    prediction: "prints contract: words-never-exceed-bytes OK"
+    if_fails: "Contract violation — more words than bytes"
+
+qa_gate:
+  id: QA-GOFZ
+  name: "gofz contracts"
+  min_coverage: 0.90
+  max_complexity: 20
+  required_tests: ["TestRun"]
